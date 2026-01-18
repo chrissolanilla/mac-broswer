@@ -1,8 +1,11 @@
 #include <AppKit/AppKit.h>
 #import <Cocoa/Cocoa.h>
 
+static NSNotificationName const buttonClicked = @"buttonClicked";
+
 @interface Window : NSWindow <NSWindowDelegate>
 @property (strong) NSTextField *label;
+@property (strong) NSButton *button;
 @end
 
 @implementation Window
@@ -37,6 +40,22 @@
 
     [self.contentView addSubview:self.label];
 
+	//butotn
+	self.button = [[NSButton alloc] initWithFrame:NSMakeRect(20,80,160,32)];
+	self.button.title = @"BUst";
+	self.button.bezelStyle = NSBezelStyleRounded;
+	self.button.target = self;
+	self.button.action = @selector(buttonPressed:);
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(buttonNotificationRecieved:)
+		name:buttonClicked
+		object:nil];
+
+
+
+    [self.contentView addSubview:self.button];
+
     [self makeKeyAndOrderFront:nil];
     return self;
 }
@@ -49,6 +68,14 @@
 - (void)textDidChange:(NSNotification *)notification {
 	NSTextField *tf = (NSTextField *)notification.object;
 	NSLog(@"text is: %@", tf.stringValue);
+}
+
+- (void)buttonPressed:(id)sender {
+	NSString *current = self.label.stringValue;
+
+    NSLog(@"current text is: %@", current);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:buttonClicked object:nil];
 }
 
 @end
