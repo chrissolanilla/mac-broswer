@@ -1,5 +1,6 @@
 #include <AppKit/AppKit.h>
 #import <Cocoa/Cocoa.h>
+#include "c_lib/http.h"
 
 static NSNotificationName const buttonClicked = @"buttonClicked";
 
@@ -68,6 +69,18 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
 - (void)textDidChange:(NSNotification *)notification {
 	NSTextField *tf = (NSTextField *)notification.object;
 	NSLog(@"text is: %@", tf.stringValue);
+
+	const char *url = "https://chrissolanilla.com";
+	char *response = busto_http_get(url);
+
+	if(response){
+		NSLog(@"response: %s", response);
+		self.label.stringValue = [NSString stringWithUTF8String: response];
+		busto_http_cleanup(response);
+	}
+	else {
+		self.label.stringValue = @"req failed, fuck me an my chud life";
+	}
 }
 
 - (void)buttonPressed:(id)sender {
