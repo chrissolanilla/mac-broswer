@@ -74,6 +74,7 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
 	NSString *current = self.label.stringValue;
 
     NSLog(@"current text is: %@", current);
+	self.label.stringValue = @"poop";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:buttonClicked object:nil];
 }
