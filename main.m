@@ -12,7 +12,7 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
 @implementation Window
 
 - (instancetype)init {
-    self = [super initWithContentRect:NSMakeRect(0, 0, 420, 220)
+    self = [super initWithContentRect:NSMakeRect(0, 0, 1920, 1080)
                             styleMask:(NSWindowStyleMaskTitled |
                                        NSWindowStyleMaskClosable |
                                        NSWindowStyleMaskMiniaturizable |
@@ -25,7 +25,7 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
     self.delegate = self;
     [self center];
 
-    self.label = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 90, 380, 60)];
+    self.label = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 290, 800, 700)];
     self.label.stringValue = @"Busto Browser";
     self.label.bezeled = NO;
     self.label.drawsBackground = NO;
@@ -69,7 +69,13 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
 - (void)textDidChange:(NSNotification *)notification {
 	NSTextField *tf = (NSTextField *)notification.object;
 	NSLog(@"text is: %@", tf.stringValue);
+}
 
+- (void)buttonPressed:(id)sender {
+	NSString *current = self.label.stringValue;
+
+    NSLog(@"current text is: %@", current);
+	self.label.stringValue = @"poop";
 	const char *url = "https://chrissolanilla.com";
 	char *response = busto_http_get(url);
 
@@ -81,13 +87,6 @@ static NSNotificationName const buttonClicked = @"buttonClicked";
 	else {
 		self.label.stringValue = @"req failed, fuck me an my chud life";
 	}
-}
-
-- (void)buttonPressed:(id)sender {
-	NSString *current = self.label.stringValue;
-
-    NSLog(@"current text is: %@", current);
-	self.label.stringValue = @"poop";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:buttonClicked object:nil];
 }
